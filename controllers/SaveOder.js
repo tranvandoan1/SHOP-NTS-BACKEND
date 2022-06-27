@@ -45,10 +45,10 @@ export const remove = (req, res) => {
         error: "Không xóa được sp oder",
       });
     }
-    Saveoder.find((err, data) => {
-      console.log(data.length, "sau");
+    Saveoder.find((err, dataAll) => {
+      console.log(dataAll.length, "sau");
 
-      return res.json(data);
+      return res.json(dataAll);
     });
   });
 };
@@ -75,7 +75,13 @@ export const update = (req, res) => {
           error: "Không sửa được oder",
         });
       }
-      res.json(data);
+      Saveoder.find((err, dataAll) => {
+        if (err) {
+          error: "Không tìm thấy sp oder";
+        }
+        console.log(dataAll)
+        return res.json(dataAll);
+      });
     });
   });
 };

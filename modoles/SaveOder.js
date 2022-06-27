@@ -12,7 +12,7 @@ const Saveoder = new mongoose.Schema({
         required: true
     },
     amount: {
-        type: String,
+        type: Number,
         trim: true,
         required: true,
         maxlength: 32
