@@ -59,7 +59,7 @@ export const list = (req, res) => {
       error: "Không tìm thấy sp oder";
     }
     res.json(data);
-  });
+  })
 };
 
 export const update = (req, res) => {
