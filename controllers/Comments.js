@@ -1,7 +1,6 @@
 import Comments from "../modoles/Comments";
 import formidable from "formidable";
 import _ from "lodash";
-console.log('first')
 export const create = (req, res) => {
   let comment = new Comments(req.body);
   comment.save((error, data) => {
