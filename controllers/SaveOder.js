@@ -59,14 +59,16 @@ export const list = (req, res) => {
       error: "Không tìm thấy sp oder";
     }
     res.json(data);
-  })
+  });
 };
 
 export const update = (req, res) => {
   const form = formidable.IncomingForm();
   form.keepExtensions = true;
   form.parse(req, (err, fields, files) => {
+    console.log(fields);
     let saveoder = req.saveoder;
+    console.log(saveoder);
     saveoder = _.assignIn(saveoder, fields);
 
     saveoder.save((err, data) => {
@@ -79,7 +81,6 @@ export const update = (req, res) => {
         if (err) {
           error: "Không tìm thấy sp oder";
         }
-        console.log(dataAll)
         return res.json(dataAll);
       });
     });
