@@ -10,7 +10,6 @@ import categoryRoutes from "./routes/categoris";
 import productRoutes from "./routes/Products";
 import authRoutes from "./routes/Auth";
 import userRoutes from "./routes/Users";
-import saveuserRoutes from "./routes/SaveUser";
 import saveoderRoutes from "./routes/SaveOder";
 import InfoUserRoutes from "./routes/InfoUser";
 import OderRoutes from "./routes/Oder";
@@ -65,8 +64,6 @@ app.use("/api", CateShopeeRoutes);
 app.use("/api", ShopOwnerRoutes);
 app.use("/api", authRoutes);
 app.use("/api", userRoutes);
-
-app.use("/api", saveuserRoutes);
 
 app.use("/api", saveoderRoutes);
 

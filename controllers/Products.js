@@ -1,5 +1,4 @@
 import Product from "../modoles/Products";
-import Saveuser from "../modoles/SaveUser";
 
 import formidable from "formidable";
 import _, { filter } from "lodash";

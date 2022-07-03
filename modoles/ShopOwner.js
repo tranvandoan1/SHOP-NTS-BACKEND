@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const { ObjectId } = mongoose.Schema;
 const ShopOwner = new mongoose.Schema({
-    nameShop: {
+    name: {
         type: String,
         trim: true,
         required: true

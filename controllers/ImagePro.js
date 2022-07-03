@@ -1,5 +1,4 @@
 import ImagePro from "../modoles/ImagePro";
-import Saveuser from "../modoles/SaveUser";
 
 import formidable from "formidable";
 import _, { filter } from "lodash";

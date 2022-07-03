@@ -1,6 +1,8 @@
 import Saveoder from "../modoles/SaveOder";
 import _ from "lodash";
 import formidable from "formidable";
+const ObjectId = require("mongodb").ObjectID;
+
 export const create = (req, res) => {
   const saveoder = new Saveoder(req.body);
   saveoder.save((err, data) => {
@@ -13,7 +15,12 @@ export const create = (req, res) => {
       if (err) {
         error: "Không tìm thấy sp oder";
       }
-      return res.json(data);
+      Saveoder.find((err, data) => {
+        if (err) {
+          error: "Không tìm thấy sp oder";
+        }
+        res.json(data);
+      });
     });
   });
 };
@@ -63,12 +70,10 @@ export const list = (req, res) => {
 };
 
 export const update = (req, res) => {
-  const form = formidable.IncomingForm();
+  const form = new formidable.IncomingForm();
   form.keepExtensions = true;
   form.parse(req, (err, fields, files) => {
-    console.log(fields);
     let saveoder = req.saveoder;
-    console.log(saveoder);
     saveoder = _.assignIn(saveoder, fields);
 
     saveoder.save((err, data) => {
@@ -81,8 +86,30 @@ export const update = (req, res) => {
         if (err) {
           error: "Không tìm thấy sp oder";
         }
+        console.log(dataAll, "alll");
         return res.json(dataAll);
       });
     });
+  });
+};
+export const uploadSaveOrders = async (req, res) => {
+  const { idSelect, check } = req.body;
+  const listIdStudents = await idSelect.map((id) => ObjectId(id));
+
+  await Saveoder.updateMany(
+    {
+      _id: { $in: listIdStudents },
+    },
+    {
+      $set: {
+        check: check,
+      },
+    }
+  );
+  Saveoder.find((err, dataAll) => {
+    if (err) {
+      error: "Không tìm thấy sp oder";
+    }
+    return res.json(dataAll);
   });
 };
