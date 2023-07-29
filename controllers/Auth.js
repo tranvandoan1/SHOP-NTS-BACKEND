@@ -1,47 +1,83 @@
 import User from "../modoles/Users";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import { userSignupValidator } from "../validator";
+const crypto = require("crypto");
 dotenv.config();
 const expressJwt = require("express-jwt");
+const bcrypt = require('bcrypt');
 
 export const signup = (req, res) => {
-  const user = new User(req.body);
-  user.save((error, user) => {
-    if (error) {
-      return res.status(400).json({
-        error: "Khoong the them",
+  const saltRounds = 10; // số lần lặp lại để tạo salt
+  bcrypt.hash(req.body.password, saltRounds, function (err, password) {
+    // hàm callback được gọi khi quá trình mã hóa hoàn tất
+    if (err) {
+      return res.json(err);
+    } else {
+      const newUser = {
+        name: req.body.name,
+        email: req.body.email,
+        hashed_password: password,
+        avatar: req.body.avatar,
+        phone: req.body.phone,
+      }
+      const user = new User(newUser);
+      user.save((error, user) => {
+        if (error) {
+          return res.status(400).json({
+            error: "Không thêm được",
+          });
+        }
+        return res.json(user);
       });
+
     }
-    user.salt = undefined;
-    user.hashed_password = undefined;
-    res.json(user);
   });
+
+
+
 };
-export const signin = (req, res) => {
-  const { email, password, phone } = req.body;
-  User.findOne({ email } || { phone }, (error, user) => {
-    if (error || !user) {
-      return res.status(400).json({
-        error:
-          "Email hoặc số điện thoại của bạn không hợp lệ . Vui lòng đăng ký",
-      });
-    }
-
-    if (!user.authenticate(password)) {
-      return res.status(401).json({
-        error: "Email và Password của bạn không đúng ?",
-      });
-    }
-
-    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
-    res.cookie("t", token, { expire: new Date() + 9999 });
-
-    const { _id, name, avatar, email, role, phone } = user;
-    return res.json({
-      token,
-      user: { _id, avatar, email, name, role, phone },
-    });
+export const signin = async (req, res) => {
+  const { value, password } = req.body;
+  function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+  const user = await User.findOne(isValidEmail(value) == true ? {
+    email: value,
+  } : {
+    phone: value,
   });
+
+  console.log(user, 'user')
+
+  if (user !== null || user !== undefined) {
+    bcrypt.compare(password, user.hashed_password, function (error, result) {
+      console.log(result, 'result')
+      // hàm callback được gọi khi quá trình so sánh hoàn tất
+      if (error) {
+        return res.status(400).json({ error: 'Lỗi 400' });
+      } else if (result) {
+        const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
+        res.cookie("t", token, { expire: new Date() + 9999 });
+
+        const { _id, name, avatar, email, role, phone } = user;
+        return res.json({
+          token,
+          user: { _id, avatar, email, name, role, phone },
+        });
+      } else {
+        return res.status(400).json({
+          error: "Mật khẩu không khớp"
+        })
+      }
+    });
+  } else {
+    return res.status(400).json({
+      error:
+        "Email hoặc số điện thoại của bạn không hợp lệ . Vui lòng đăng ký",
+    });
+  }
 };
 
 export const signout = (req, res) => {

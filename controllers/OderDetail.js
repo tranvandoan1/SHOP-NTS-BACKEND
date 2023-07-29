@@ -17,7 +17,34 @@ export const create = (req, res) => {
     });
   });
 };
+// User.findOne({ _id }, async (error, user) => {
+//   console.log('Vào 1')
+//   try {
+//     if (user.authenticate(current_password) == false) {
+//       console.log('Vào 2')
+//       return res.json({ error: 'Mật khẩu không đúng !' })
+//     } else {
+//       console.log('Vào 3')
 
+//       await User.updateMany(
+//         {
+//           _id: { $in: _id },
+//         },
+//         {
+//           $set: { ...user, hashed_password: user.encrytPassword(password) },
+//         }
+//       );
+  
+//       return res.json({susssuc:'Thay đổi thành công'})
+//     }
+//   } catch (error) {
+//     console.log('lỗi', error)
+//     return res.status(400).json(error);
+//   }
+
+//   // salt: 'd0fb87b0-ed29-11ec-86b8-351cb2e74ed6',
+//   // hashed_password: 'e4d486d16bc4bf4a334054b6aeb80fea05ba58fb',
+// });
 export const Id = (req, res, next, id) => {
   OderDetail.findById(id).exec((err, oderdetail) => {
     if (err || !oderdetail) {

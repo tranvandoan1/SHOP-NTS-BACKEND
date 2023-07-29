@@ -4,7 +4,8 @@ const { ObjectId } = mongoose.Schema;
 const Saveoder = new mongoose.Schema(
   {
     user_id: {
-      type: Number,
+      type: ObjectId,
+      ref: "users",
       required: true,
     },
     linked: {
@@ -14,10 +15,9 @@ const Saveoder = new mongoose.Schema(
       type: Number,
       trim: true,
       required: true,
-      maxlength: 32,
     },
     commodity_value: {
-      type: String,
+      type: String || undefined,
       trim: true,
     },
     classification: {
@@ -40,14 +40,20 @@ const Saveoder = new mongoose.Schema(
       type: Number,
       trim: true,
     },
-    user_id: {
-      type: String,
-      trim: true,
-    },
+
     shop_id: {
       type: ObjectId,
       ref: "shopowner",
       required: true,
+    },
+    classification_id: {
+      type: ObjectId,
+      ref: "classification",
+      required: true,
+    },
+    commodity_value_id: {
+      type: ObjectId || undefined,
+      ref: "classification",
     },
     pro_id: {
       type: ObjectId,

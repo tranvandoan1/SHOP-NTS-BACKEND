@@ -24,6 +24,7 @@ import ClassificationRoutues from "./routes/Classification";
 import CommodityValueRoutues from "./routes/CommodityValue";
 import ShopOwnerRoutes from "./routes/ShopOwner";
 import ImageProRoutes from "./routes/ImagePro";
+import PushEmail from "./routes/PushEmail";
 
 const app = express();
 dotenv.config();
@@ -77,6 +78,7 @@ app.use("/api", SlidesRoutes);
 app.use("/api", TypeGroupNameRoutues);
 app.use("/api", CommodityValueRoutues);
 app.use("/api", ClassificationRoutues);
+app.use("/api", PushEmail);
 
 // listen
 const port = process.env.PORT || 8000;

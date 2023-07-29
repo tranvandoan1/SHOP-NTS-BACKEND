@@ -2,22 +2,18 @@ import InfoUser from "../modoles/InfoUser";
 import formidable from "formidable";
 import _ from "lodash";
 
-export const create = (req, res) => {
-  let infoUser = new InfoUser(req.body);
-
-  infoUser.save((err, data) => {
-    if (err) {
-      res.status(400).json({
-        error: "Không thêm được thông tin",
-      });
-    }
+export const create = async (req, res) => {
+  try {
+    await InfoUser.create(req.body);
     InfoUser.find((err, data) => {
       if (err) {
         error: "Không tìm thấy thông tin";
       }
       return res.json(data);
     });
-  });
+  } catch (error) {
+    return res.status(400).json(error);
+  }
 };
 
 export const Id = (req, res, next, id) => {
@@ -35,21 +31,19 @@ export const read = (req, res) => {
   return res.json(req.infoUser);
 };
 
-export const remove = (req, res) => {
-  let infoUser = req.infoUser;
-  infoUser.remove((err, infoUser) => {
-    if (err) {
-      return res.status(400).json({
-        error: "Không xóa được thông tin",
-      });
-    }
+export const remove = async (req, res) => {
+  try {
+    await InfoUser.findByIdAndRemove(req.infoUser._id);
     InfoUser.find((err, data) => {
       if (err) {
-        error: "Không tìm thấy thông tin";
+        error: "Không tìm thấy sản phẩm";
       }
       return res.json(data);
     });
-  });
+  } catch (error) {
+    return res.status(400).json(error);
+  }
+
 };
 
 export const list = (req, res) => {
@@ -61,32 +55,40 @@ export const list = (req, res) => {
   });
 };
 
-export const update = (req, res) => {
-  let form = new formidable.IncomingForm();
-  form.keepExtensions = true;
-  form.parse(req, (err, fields, files) => {
-    if (err) {
-      return res.status(400).json({
-        error: "ko thành côgn",
-      });
-    }
-
-    let infoUser = req.infoUser;
-    infoUser = _.assignIn(infoUser, fields);
-
-    infoUser.save((err, data) => {
-      if (err) {
-        res.status(400).json({
-          error: "Không sửa được thông tin",
-        });
+export const update = async (req, res) => {
+  try {
+    const { _idUpload, _idInfoTrue } = req.body;
+    await InfoUser.updateMany(
+      {
+        _id: { $in: _idUpload },
+      },
+      {
+        $set: {
+          status: true
+        },
       }
-      InfoUser.find((err, data) => {
-        if (err) {
-          error: "Không tìm thấy thông tin";
+    );
+    if (_idInfoTrue !== undefined) {
+      await InfoUser.updateMany(
+        {
+          _id: { $in: _idInfoTrue },
+        },
+        {
+          $set: {
+            status: false
+
+          },
         }
-        return res.json(data);
-      });
+      );
+    }
+    InfoUser.find((err, dataAll) => {
+      if (err) {
+        error: "Không tìm thấy sp oder";
+      }
+      return res.json(dataAll);
     });
-  });
+  } catch (error) {
+    return res.status(400).json(error);
+  }
 };
 

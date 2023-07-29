@@ -53,21 +53,32 @@ export const list = (req, res) => {
   });
 };
 
-export const update = (req, res) => {
-  const form = formidable.IncomingForm();
-  form.keepExtensions = true;
-  form.parse(req, (err, fields, files) => {
-    let slide = req.slide;
+// export const update = (req, res) => {
+//   const form = formidable.IncomingForm();
+//   form.keepExtensions = true;
+//   form.parse(req, (err, fields, files) => {
+//     let slide = req.slide;
 
-    slide = _.assignIn(slide, fields);
+//     slide = _.assignIn(slide, fields);
 
-    slide.save((err, data) => {
-      if (err) {
-        res.status(400).json({
-          error: "Không sửa được ảnh",
-        });
-      }
-      res.json(data);
-    });
-  });
+//     slide.save((err, data) => {
+//       if (err) {
+//         res.status(400).json({
+//           error: "Không sửa được ảnh",
+//         });
+//       }
+//       res.json(data);
+//     });
+//   });
+// };
+
+export const update = async (req, res) => {
+  // await Slides.findByIdAndUpdate(req.params.slidesId, req.body);
+  // Slides.find((err, data) => {
+  //   if (err) {
+  //     error: "Không tìm thấy ảnh";
+  //   }
+  //   res.json(data);
+  // });
+  console.log(req.params.slidesId, req.body,' req.body')
 };

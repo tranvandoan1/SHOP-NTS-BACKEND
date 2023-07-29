@@ -14,6 +14,10 @@ const productSchema = new mongoose.Schema(
       type: ObjectId,
       ref: "shopowner",
     },
+    user_id: {
+      type: ObjectId,
+      ref: "user",
+    },
     photo: {
       type: String,
     },

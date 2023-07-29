@@ -1,6 +1,8 @@
 import Classification from '../modoles/Classification';
 import formidable from 'formidable';
 import _ from 'lodash';
+import { ObjectID } from "mongodb";
+
 export const create = (req, res) => {
     let classification = new Classification(req.body);
     classification.save((error, data) => {
@@ -29,19 +31,23 @@ export const read = (req, res) => {
     return res.json(req.classification);
 }
 
-export const remove = (req, res) => {
-    let classification = req.classification;
-    classification.remove((err, classification) => {
-        if (err) {
-            return res.status(400).json({
-                error: "Không xóa được tên loại sản phẩm"
-            })
+export const removes = async (req, res) => {
+    try {
+
+        let id = req.body;
+        for (let i = 0; i < id.length; i++) {
+            id[i] = ObjectID(id[i]);
         }
-        res.json({
-            classification,
-            message: "tên loại sản phẩm đã được xóa thành công"
-        })
-    })
+        await Classification.deleteMany({ _id: { $in: id } });
+        Classification.find((err, data) => {
+            if (err) {
+                error: "Không tìm thấy sp oder";
+            }
+            return res.json(data);
+        });
+    } catch (error) {
+        return res.status(400).json(error);
+    }
 }
 
 export const list = (req, res) => {

@@ -6,14 +6,40 @@ const Classification = new mongoose.Schema(
       type: String,
     },
 
-    connection: {
-      type: String,
-    },
+    values:
+      [
+        {
+          quantity: {
+            type: Number,
+          },
+          price: {
+            type: Number,
+          },
+          name: {
+            type: String,
+          },
+          indexNumber: {
+            type: String,
+
+          },
+
+        },
+      ] | undefined,
     linked: {
       type: String,
     },
     photo: {
       type: String,
+    },
+    quantity: {
+      type: Number,
+    },
+    price: {
+      type: Number,
+    },
+    indexNumber: {
+      type: String,
+
     },
   },
   { timestamps: true }

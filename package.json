@@ -14,6 +14,7 @@
         "babel-node": "^0.0.1-security",
         "babel-preset-env": "^1.7.0",
         "babel-preset-stage-0": "^6.24.1",
+        "bcrypt": "^5.1.0",
         "body-parser": "^1.19.0",
         "cookie-parser": "^1.4.5",
         "cors": "^2.8.5",
@@ -29,6 +30,7 @@
         "mongoose": "^5.12.1",
         "morgan": "^1.10.0",
         "node": "^17.3.1",
+        "nodemailer": "^6.9.4",
         "nodemon": "^2.0.7",
         "pkill": "^2.0.0",
         "uuid": "^8.3.2"
@@ -40,6 +42,6 @@
         "@babel/preset-env": "^7.16.8"
     },
     "engines": {
-        "node": "16.x"
-      }
+        "node": ">=16.x"
+    }
 }

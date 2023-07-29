@@ -7,7 +7,7 @@ router.post('/info-user', create);
 router.get('/info-user', list);
 router.get('/info-user/:id', read);
 
-router.put('/info-user/:id', update);
+router.post('/info-user-upload-addres', update);
 
 router.delete('/info-user/:id', remove);
 

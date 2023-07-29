@@ -42,7 +42,8 @@ const InfoUser = new mongoose.Schema(
       trim: true,
     },
     status: {
-      type: Number,
+      type: Boolean,
+      default: false,
     },
   },
   { timestamps: true }

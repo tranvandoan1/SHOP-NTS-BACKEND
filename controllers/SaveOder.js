@@ -1,28 +1,21 @@
 import Saveoder from "../modoles/SaveOder";
 import _ from "lodash";
 import formidable from "formidable";
-const ObjectId = require("mongodb").ObjectID;
+import { ObjectID } from "mongodb";
 
-export const create = (req, res) => {
-  const saveoder = new Saveoder(req.body);
-  saveoder.save((err, data) => {
-    if (err) {
-      res.status(400).json({
-        error: "Không thêm được sp oder",
-      });
-    }
+export const create = async (req, res) => {
+  try {
+    await Saveoder.create(req.body);
     Saveoder.find((err, data) => {
       if (err) {
-        error: "Không tìm thấy sp oder";
+        error: "Không tìm thấy sản phẩm";
       }
-      Saveoder.find((err, data) => {
-        if (err) {
-          error: "Không tìm thấy sp oder";
-        }
-        res.json(data);
-      });
+      return res.json(data);
     });
-  });
+  } catch (error) {
+    return res.status(400).json(error);
+  }
+
 };
 
 export const saveoderId = (req, res, next, id) => {
@@ -59,42 +52,88 @@ export const remove = (req, res) => {
     });
   });
 };
+export const removes = async (req, res) => {
+  try {
+    let id = req.body;
+    for (let i = 0; i < id.length; i++) {
+      id[i] = ObjectID(id[i]);
+    }
+    await Saveoder.deleteMany({ _id: { $in: id } });
+    Saveoder.find((err, data) => {
+      if (err) {
+        error: "Không tìm thấy sp oder";
+      }
+      return res.json(data);
+    });
+  } catch (error) {
+    return res.status(400).json(error);
+  }
+
+};
 
 export const list = (req, res) => {
   Saveoder.find((err, data) => {
     if (err) {
       error: "Không tìm thấy sp oder";
     }
-    res.json(data);
+    return res.json(data);
   });
 };
 
-export const update = (req, res) => {
-  const form = new formidable.IncomingForm();
-  form.keepExtensions = true;
-  form.parse(req, (err, fields, files) => {
-    let saveoder = req.saveoder;
-    saveoder = _.assignIn(saveoder, fields);
-
-    saveoder.save((err, data) => {
-      if (err) {
-        res.status(400).json({
-          error: "Không sửa được oder",
-        });
+export const update = async (req, res) => {
+  try {
+    const { _id, amount } = req.body;
+    await Saveoder.updateMany(
+      {
+        _id: { $in: _id },
+      },
+      {
+        $set: {
+          amount: amount,
+        },
       }
-      Saveoder.find((err, dataAll) => {
-        if (err) {
-          error: "Không tìm thấy sp oder";
-        }
-        console.log(dataAll, "alll");
-        return res.json(dataAll);
-      });
+    );
+
+    Saveoder.find((err, dataAll) => {
+      if (err) {
+        error: "Không tìm thấy sp oder";
+      }
+      return res.json(dataAll);
     });
-  });
+  } catch (error) {
+    return res.status(400).json(error);
+  }
+};
+export const updateProOrder = async (req, res) => {
+  try {
+    const { _id, data } = req.body;
+    await Saveoder.updateMany(
+      {
+        _id: { $in: _id },
+      },
+      {
+        $set: {
+          commodity_value: data.commodity_value,
+          commodity_value_id: data.commodity_value_id,
+          classification: data.classification,
+          classification_id: data.classification_id,
+        },
+      }
+    );
+
+    Saveoder.find((err, dataAll) => {
+      if (err) {
+        error: "Không tìm thấy sp oder";
+      }
+      return res.json(dataAll);
+    });
+  } catch (error) {
+    return res.status(400).json(error);
+  }
 };
 export const uploadSaveOrders = async (req, res) => {
   const { idSelect, check } = req.body;
-  const listIdStudents = await idSelect.map((id) => ObjectId(id));
+  const listIdStudents = await idSelect.map((id) => ObjectID(id));
 
   await Saveoder.updateMany(
     {
@@ -106,7 +145,7 @@ export const uploadSaveOrders = async (req, res) => {
       },
     }
   );
-  
+
   Saveoder.find((err, dataAll) => {
     if (err) {
       error: "Không tìm thấy sp oder";
