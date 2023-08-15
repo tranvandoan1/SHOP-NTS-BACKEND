@@ -3,24 +3,24 @@ import formidable from 'formidable';
 import _ from 'lodash';
 export const create = (req, res) => {
     const { nameShop } = req.body;
+    console.log(req.body, 'req.body')
+    // if (!nameShop) {
+    //     return res.status(400).json({
+    //         error: "Bạn cần nhập đầy đủ thông tin"
+    //     })
+    // }
 
-    if (!nameShop) {
-        return res.status(400).json({
-            error: "Bạn cần nhập đầy đủ thông tin"
-        })
-    }
-
-    let shopowner = new ShopOwner(req.body);
+    // let shopowner = new ShopOwner(req.body);
 
 
-    shopowner.save((error, data) => {
-        if (error) {
-            return res.status(400).json({
-                error: "Không thêm duoc danh muc"
-            })
-        }
-        res.json(data)
-    })
+    // shopowner.save((error, data) => {
+    //     if (error) {
+    //         return res.status(400).json({
+    //             error: "Không thêm duoc danh muc"
+    //         })
+    //     }
+    //     res.json(data)
+    // })
 
 }
 

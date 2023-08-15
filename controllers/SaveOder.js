@@ -33,27 +33,19 @@ export const read = (req, res) => {
   return res.json(req.saveoder);
 };
 
-export const remove = (req, res) => {
+export const remove =async (req, res) => {
   let saveoder = req.saveoder;
-  Saveoder.find((err, data) => {
-    // return res.json(data);
-    console.log(data.length, "trước");
-  });
-  saveoder.remove((err, saveoder) => {
-    if (err) {
-      return res.status(400).json({
-        error: "Không xóa được sp oder",
-      });
-    }
-    Saveoder.find((err, dataAll) => {
-      console.log(dataAll.length, "sau");
+  console.log(saveoder,'saveoder')
+  // await Product.findByIdAndRemove(req.params.productId);
+  // Saveoder.find((err, dataAll) => {
+  //   console.log(dataAll.length, "sau");
 
-      return res.json(dataAll);
-    });
-  });
+  //   return res.json(dataAll);
+  // });
 };
 export const removes = async (req, res) => {
   try {
+
     let id = req.body;
     for (let i = 0; i < id.length; i++) {
       id[i] = ObjectID(id[i]);

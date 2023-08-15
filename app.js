@@ -18,15 +18,16 @@ import CommentRoutes from "./routes/Comments";
 import StatisticalRoutes from "./routes/Statistical";
 import ContactRoutes from "./routes/Contacts";
 import SlidesRoutes from "./routes/Slides";
-import CateShopeeRoutes from "./routes/CateShopee";
+import CateShopRoutes from "./routes/CateShop";
 import TypeGroupNameRoutues from "./routes/TypeGroupName";
 import ClassificationRoutues from "./routes/Classification";
 import CommodityValueRoutues from "./routes/CommodityValue";
 import ShopOwnerRoutes from "./routes/ShopOwner";
 import ImageProRoutes from "./routes/ImagePro";
-import PushEmail from "./routes/PushEmail";
+import PushOtpEmail from "./routes/PushOtpEmail";
 
 const app = express();
+
 dotenv.config();
 app.use(
   express.urlencoded({
@@ -61,7 +62,7 @@ mongoose.connection.on("error", (err) => {
 app.use("/api", productRoutes);
 app.use("/api", ImageProRoutes);
 app.use("/api", categoryRoutes);
-app.use("/api", CateShopeeRoutes);
+app.use("/api", CateShopRoutes);
 app.use("/api", ShopOwnerRoutes);
 app.use("/api", authRoutes);
 app.use("/api", userRoutes);
@@ -78,7 +79,7 @@ app.use("/api", SlidesRoutes);
 app.use("/api", TypeGroupNameRoutues);
 app.use("/api", CommodityValueRoutues);
 app.use("/api", ClassificationRoutues);
-app.use("/api", PushEmail);
+app.use("/api", PushOtpEmail);
 
 // listen
 const port = process.env.PORT || 8000;

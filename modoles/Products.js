@@ -21,21 +21,6 @@ const productSchema = new mongoose.Schema(
     photo: {
       type: String,
     },
-    photo1: {
-      type: String,
-    },
-    photo2: {
-      type: String,
-    },
-    photo3: {
-      type: String,
-    },
-    photo4: {
-      type: String,
-    },
-    photo5: {
-      type: String,
-    },
     view: {
       type: Number,
     },
@@ -65,6 +50,9 @@ const productSchema = new mongoose.Schema(
       type: String,
     },
     linked: {
+      type: String,
+    },
+    image_id: {
       type: String,
     },
     name_classification: {

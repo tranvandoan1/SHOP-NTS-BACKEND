@@ -41,6 +41,9 @@ const Classification = new mongoose.Schema(
       type: String,
 
     },
+    image_id: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

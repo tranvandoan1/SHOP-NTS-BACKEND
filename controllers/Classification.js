@@ -2,6 +2,19 @@ import Classification from '../modoles/Classification';
 import formidable from 'formidable';
 import _ from 'lodash';
 import { ObjectID } from "mongodb";
+import { google } from "googleapis";
+const CLIENT_ID = process.env.CLIENT_ID
+const CLIENT_SECRET = process.env.CLIENT_SECRET
+const REFRESH_TOKEN = process.env.REFRESH_TOKEN
+const REQUEST_URI = process.env.REQUEST_URI
+
+
+const oauth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REQUEST_URI)
+oauth2Client.setCredentials({ refresh_token: REFRESH_TOKEN })
+const drive = google.drive({
+    version: 'v3',
+    auth: oauth2Client
+})
 
 export const create = (req, res) => {
     let classification = new Classification(req.body);
@@ -33,6 +46,14 @@ export const read = (req, res) => {
 
 export const removes = async (req, res) => {
     try {
+        const classifies = await Classification.find({
+            _id: req.body,
+        });
+        classifies.map(async (item) => {
+            await drive.files.delete({
+                fileId: item.image_id
+            })
+        })
 
         let id = req.body;
         for (let i = 0; i < id.length; i++) {

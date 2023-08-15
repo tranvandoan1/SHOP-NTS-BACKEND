@@ -61,10 +61,10 @@ export const signin = async (req, res) => {
         const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
         res.cookie("t", token, { expire: new Date() + 9999 });
 
-        const { _id, name, avatar, email, role, phone } = user;
+        const { _id, name, avatar, email, role, phone, image_id } = user;
         return res.json({
           token,
-          user: { _id, avatar, email, name, role, phone },
+          user: { _id, avatar, email, name, role, phone, image_id },
         });
       } else {
         return res.status(400).json({

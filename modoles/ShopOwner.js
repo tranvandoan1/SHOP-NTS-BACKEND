@@ -14,13 +14,19 @@ const ShopOwner = new mongoose.Schema({
     photo: {
         type: String
     },
+    image_id: {
+        type: String,
+      },
     followers: {
         type: Number,
-        trim: true
+        trim: true,
+        default: 0
     },
     product_reviews: {
         type: Number,
-        trim: true
+        trim: true,
+        default: 0
+
     }
 }, { timestamps: true });
 module.exports = mongoose.model('shopowner', ShopOwner);
